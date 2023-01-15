@@ -4,7 +4,7 @@ class Weather extends React.Component {
     render() {
         return (
             <div>
-                отображение погоды
+                {this.props.city}
             </div>
         );
     }
