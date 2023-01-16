@@ -7,20 +7,40 @@ const API_KEY = "e7907fb61341a884c0af67d0ce2257cb"
 
 class App extends React.Component { 
 
+  state = {
+    temp: undefined,
+    city: undefined,
+    country: undefined,
+    humidity: undefined,
+    speed: undefined,
+    error: undefined
+  }
+
   gettingWeatherNow = async (e) => {
     e.preventDefault();
     var city = e.target.elements.city.value;
-    const api_url = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`);
+    const api_url = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
     const data = await api_url.json();
-    console.log(data.main.temp);
+    console.log(data);
+
+
+      this.setState({
+        temp: data.main.temp,
+        city: data.name,
+        country: data.sys.country,
+        humidity: data.main.humidity,
+        speed: data.wind.speed,
+        error: ""
+      });
+
   }
 
   gettingWeather5Day = async (e) => {
     e.preventDefault();
     var city = e.target.elements.city.value;
-    const api_url = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}`);
+    const api_url = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`);
     const data = await api_url.json();
-    console.log(data.list);
+    console.log(data);
   }
 
   gettingWeather = async (e) => {
@@ -38,12 +58,12 @@ class App extends React.Component {
           <div>
               <Form weatherMethod={this.gettingWeather} />
               <Weather 
-//                temp = {this.state.temp}
-//                city = {this.state.city}
-//                country={this.state.country}
-//                sunrise={this.state.sunrise}
-//                sunset={this.state.sunset}
-//                error={this.state.error}
+                temp = {this.state.temp}
+                city = {this.state.city}
+                country = {this.state.country}
+                humidity = {this.state.humidity}
+                speed = {this.state.speed}
+                error = {this.state.error}
                 />
 
           </div>
