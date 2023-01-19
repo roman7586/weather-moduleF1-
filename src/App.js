@@ -7,13 +7,16 @@ const API_KEY = "e7907fb61341a884c0af67d0ce2257cb"
 
 class App extends React.Component { 
 
+  //state = {
+  //  temp: undefined,
+  //  city: undefined,
+  //  country: undefined,
+  //  humidity: undefined,
+  //  speed: undefined,
+  //  error: undefined
+  //}
   state = {
-    temp: undefined,
-    city: undefined,
-    country: undefined,
-    humidity: undefined,
-    speed: undefined,
-    error: undefined
+    list: []
   }
 
   gettingWeatherNow = async (e) => {
@@ -23,17 +26,18 @@ class App extends React.Component {
     const data = await api_url.json();
     console.log(data);
 
-
-      this.setState({
+    this.setState ({
+      city: data.name,
+      list: [ {
+        dt_txt: (new Date()).toString(),
+        dt: data.dt,
         temp: data.main.temp,
-        city: data.name,
-        country: data.sys.country,
         humidity: data.main.humidity,
         speed: data.wind.speed,
         error: ""
-      });
-
-  }
+      },
+  ]})
+}
 
   gettingWeather5Day = async (e) => {
     e.preventDefault();
@@ -41,6 +45,21 @@ class App extends React.Component {
     const api_url = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`);
     const data = await api_url.json();
     console.log(data);
+
+    this.setState ({
+      city: data.city.name,
+      list:  
+        data.list.map(st => {
+          return {
+            dt_txt: st.dt_txt,
+            dt: st.dt,
+            temp: st.main.temp,
+            humidity: st.main.humidity,
+            speed: st.wind.speed,
+          }
+        }
+      ),
+    })
   }
 
   gettingWeather = async (e) => {
@@ -57,14 +76,19 @@ class App extends React.Component {
       return (
           <div>
               <Form weatherMethod={this.gettingWeather} />
-              <Weather 
-                temp = {this.state.temp}
-                city = {this.state.city}
-                country = {this.state.country}
-                humidity = {this.state.humidity}
-                speed = {this.state.speed}
-                error = {this.state.error}
-                />
+
+              {this.state.list.map(st => 
+                 <div key={st.dt}>
+                 <Weather
+                 dt_txt = {st.dt_txt}
+                 temp = {st.temp}
+                 country = {st.country}
+                 humidity = {st.humidity}
+                 speed = {st.speed}
+                 />
+                </div>
+                 )}
+            
 
           </div>
       );
