@@ -7,14 +7,6 @@ const API_KEY = "e7907fb61341a884c0af67d0ce2257cb"
 
 class App extends React.Component { 
 
-  //state = {
-  //  temp: undefined,
-  //  city: undefined,
-  //  country: undefined,
-  //  humidity: undefined,
-  //  speed: undefined,
-  //  error: undefined
-  //}
   state = {
     list: []
   }
@@ -75,6 +67,8 @@ class App extends React.Component {
   render() {
       return (
           <div>
+              <p align="center" ><b>Приложение о погоде в настоящее время  и прогноз на 5 дней</b></p>
+              <p align="center">Выберите город, и период отображения погоды</p>
               <Form weatherMethod={this.gettingWeather} />
 
               {this.state.list.map(st => 
